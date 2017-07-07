@@ -39,8 +39,8 @@ import com.michaldabski.utils.FontApplicator;
 public class AboutActivity extends Activity implements OnClickListener
 {
 	
-	private static final String PLAYSTORE_URL = "https://play.google.com/store/apps/developer?id=mick88";
-	private static final String FEEDBACK_ADDRESS = "contact@michaldabski.com";
+	private static final String PLAYSTORE_URL = "https://play.google.com/store/search?q=pkparis&c=apps";
+	private static final String FEEDBACK_ADDRESS = "Yassine.Taouil@gmail.com";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -55,7 +55,8 @@ public class AboutActivity extends Activity implements OnClickListener
 		{
 			PackageInfo pInfo = getPackageManager().getPackageInfo(
 					getPackageName(), 0);
-			tvAppVersion.setText(pInfo.versionName);
+			tvAppVersion.setText("v"+pInfo.versionName);
+
 		} catch (NameNotFoundException e)
 		{
 			e.printStackTrace();

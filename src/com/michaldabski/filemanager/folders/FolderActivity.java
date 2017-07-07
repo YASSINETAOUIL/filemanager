@@ -20,15 +20,27 @@
  ******************************************************************************/
 package com.michaldabski.filemanager.folders;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.hardware.usb.UsbDevice;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -41,6 +53,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
+
 
 import com.michaldabski.filemanager.FileManagerApplication;
 import com.michaldabski.filemanager.R;
@@ -48,19 +62,46 @@ import com.michaldabski.filemanager.about.AboutActivity;
 import com.michaldabski.filemanager.clipboard.Clipboard;
 import com.michaldabski.filemanager.clipboard.Clipboard.ClipboardListener;
 import com.michaldabski.filemanager.clipboard.ClipboardFileAdapter;
+import com.michaldabski.filemanager.favourites.FavouriteFolder;
 import com.michaldabski.filemanager.favourites.FavouritesManager;
 import com.michaldabski.filemanager.favourites.FavouritesManager.FavouritesListener;
 import com.michaldabski.filemanager.nav_drawer.NavDrawerAdapter;
 import com.michaldabski.filemanager.nav_drawer.NavDrawerAdapter.NavDrawerItem;
+import com.michaldabski.filemanager.sqlite.SQLiteHelper;
+import com.michaldabski.utils.FileUtils;
 import com.michaldabski.utils.FontApplicator;
 import com.michaldabski.utils.ListViewUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
-public class FolderActivity extends Activity implements OnItemClickListener, ClipboardListener, FavouritesListener
-{	
-	public static class FolderNotOpenException extends Exception
+import  com.michaldabski.utils.UsbMonitor;
+import  com.michaldabski.utils.my_Service;
+
+public class FolderActivity extends Activity implements OnItemClickListener, ClipboardListener, FavouritesListener, UsbMonitor.Listener
+{
+
+    @Override
+    public void deviceAdded(UsbDevice device) {
+        Toast.makeText(getBaseContext(),getResources().getString(R.string.branche)+" "+device.getProductName().toString(),Toast.LENGTH_SHORT ).show();
+    }
+
+    @Override
+    public void deviceRemoved(UsbDevice device) {
+		//Toast.makeText(getBaseContext(),usb_path,Toast.LENGTH_SHORT ).show();
+        Toast.makeText(getBaseContext(),getResources().getString(R.string.debranche)+" "+device.getProductName().toString(),Toast.LENGTH_SHORT ).show();
+        FileManagerApplication application = (FileManagerApplication) getApplication();
+        FavouritesManager favouritesManager = application.getFavouritesManager();
+		favouritesManager.removeFavourite_olde_file();
+		this.lastFolder=new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+		this.finish();
+    }
+
+    public static class FolderNotOpenException extends Exception
 	{
 		
 	}
@@ -74,18 +115,43 @@ public class FolderActivity extends Activity implements OnItemClickListener, Cli
 	File lastFolder=null;
 	private FontApplicator fontApplicator;
 
+    private UsbMonitor mUsbMonitor;
+	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
+	private static final int REQUEST_PERMISSION_SETTING = 101;
+	private boolean sentToSettings = false;
+	private SharedPreferences permissionStatus;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+/*		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+				!= PackageManager.PERMISSION_GRANTED){
+			Toast.makeText(getBaseContext(), "checkSelfPermission", Toast.LENGTH_SHORT).show();
+			if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+					Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+				Toast.makeText(getBaseContext(), "shouldShowRequestPermissionRationale", Toast.LENGTH_SHORT).show();
+			}else
+				Toast.makeText(getBaseContext(), "shouldShowRequestPermissionRationale false", Toast.LENGTH_SHORT).show();
+		}else
+			Toast.makeText(getBaseContext(), "checkSelfPermission false", Toast.LENGTH_SHORT).show();
+*/
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		Intent intent2 = new Intent(this, my_Service.class);
+		startService(intent2);
+
+		mUsbMonitor = new UsbMonitor(getApplicationContext().getApplicationContext());
+        mUsbMonitor.addListener(this);
 
 		setupDrawers();
 		Clipboard.getInstance().addListener(this);
 		
 		fontApplicator = new FontApplicator(getApplicationContext(), "Roboto_Light.ttf").applyFont(getWindow().getDecorView());
+
+
+
 	}
-	
+
 	public FontApplicator getFontApplicator()
 	{
 		return fontApplicator;
@@ -99,7 +165,11 @@ public class FolderActivity extends Activity implements OnItemClickListener, Cli
 		application.getFavouritesManager().removeFavouritesListener(this);
 		super.onDestroy();
 	}
-	
+    @Override
+    public void onResume() {
+        super.onResume();
+        mUsbMonitor.resume();
+    }
 	public void setLastFolder(File lastFolder)
 	{
 		this.lastFolder = lastFolder;
@@ -114,6 +184,7 @@ public class FolderActivity extends Activity implements OnItemClickListener, Cli
 			application.getAppPreferences().setStartFolder(lastFolder).saveChanges(getApplicationContext());
 			Log.d(LOG_TAG, "Saved last folder "+lastFolder.toString());
 		}
+        mUsbMonitor.pause();
 		super.onPause();
 	}
 
@@ -216,9 +287,10 @@ public class FolderActivity extends Activity implements OnItemClickListener, Cli
 		// add listview header to push items below the actionbar
 		ListView navListView = (ListView) findViewById(R.id.listNavigation);
 		ListViewUtils.addListViewPadding(navListView, this, true);
-		
+
 		loadFavourites(application.getFavouritesManager());
         application.getFavouritesManager().addFavouritesListener(this);
+
 	}
 	
 	void setupClipboardDrawer()

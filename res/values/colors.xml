@@ -20,7 +20,7 @@
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <resources>
-    <color name="accent_color">#FF8800</color>
-    <color name="accent_color_light">#FFBB33</color>
+    <color name="accent_color">#FA4616</color>
+    <color name="accent_color_light">#faa316</color>
     <color name="color_window_background">#E5E5E5</color>
 </resources>

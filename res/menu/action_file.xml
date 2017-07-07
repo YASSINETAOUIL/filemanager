@@ -27,7 +27,7 @@
         android:title="@string/share"
         android:actionProviderClass="android.widget.ShareActionProvider"
         android:visible="true"/>
-    
+
     <item
         android:id="@+id/action_cut"
         android:icon="@drawable/ic_cut"
@@ -59,7 +59,7 @@
         android:showAsAction="ifRoom"
         android:title="@string/select_all"
         android:visible="true"/>
-    
+
     <item
         android:id="@+id/action_info"
         android:orderInCategory="40"

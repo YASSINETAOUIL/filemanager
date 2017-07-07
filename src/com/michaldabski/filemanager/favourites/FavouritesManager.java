@@ -55,7 +55,8 @@ public class FavouritesManager
 		this.sqLiteHelper = new SQLiteHelper(context);
 		this.favouritesListeners = new HashSet<FavouritesManager.FavouritesListener>();
 		this.folders = sqLiteHelper.selectAll(FavouriteFolder.class);
-		sort();
+        this.removeFavourite_olde_file();
+        sort();
 		fixFavouritesOrder();
 	}
 	
@@ -109,13 +110,25 @@ public class FavouritesManager
 	
 	public void removeFavourite(File file)
 	{
-		for (FavouriteFolder folder : folders) if (folder.equals(file))
-			{
-				removeFavourite(folder);
-				break;
-			}
+		for (FavouriteFolder folder : folders) {
+            if (folder.equals(file)) {
+                removeFavourite(folder);
+                break;
+            }else if(!folder.exists()||!folder.getFile().isDirectory()){
+                removeFavourite(folder);
+            }
+        }
 	}
-	
+
+    public void removeFavourite_olde_file()
+    {
+        for (FavouriteFolder folder : folders)
+            if (!folder.exists()||!folder.getFile().isDirectory())
+            {
+                removeFavourite(folder);
+                break;
+            }
+    }
 	public void removeFavourite(FavouriteFolder favouriteFolder)
 	{
 		folders.remove(favouriteFolder);

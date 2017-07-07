@@ -60,6 +60,7 @@ public class FavouriteFolder extends NavDrawerShortcut implements Comparable<Fav
 		this(new File(path), label);
 	}
 
+
 	public File getFile()
 	{
 		return new File(path);

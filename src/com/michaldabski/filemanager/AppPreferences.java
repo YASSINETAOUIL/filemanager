@@ -61,14 +61,21 @@ public class AppPreferences
 	private void loadFromSharedPreferences(SharedPreferences sharedPreferences)
 	{
 		String startPath = sharedPreferences.getString(PREF_START_FOLDER, null);
-		if (startPath == null)
-		{
-			if (Environment.getExternalStorageDirectory().list() != null)
-				startFolder = Environment.getExternalStorageDirectory();
-			else 
-				startFolder = new File("/");
-		}
-		else this.startFolder = new File(startPath);
+
+
+			if (startPath == null ) {
+				if (Environment.getExternalStorageDirectory().list() != null)
+					startFolder = Environment.getExternalStorageDirectory();
+				else
+					startFolder = new File("/");
+			} else {
+					File my_fime = new File(startPath);
+				if(!my_fime.exists())
+					startPath=Environment.getExternalStorageDirectory().getAbsolutePath();
+				else
+					this.startFolder = new File(startPath);
+			}
+
 		this.sortBy = sharedPreferences.getInt(PREF_SORT_BY, DEFAULT_SORT_BY);
 		this.cardLayout = sharedPreferences.getInt(PREF_CARD_LAYOUT, CARD_LAYOUT_MEDIA);
 	}

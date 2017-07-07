@@ -22,7 +22,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.michaldabski.filemanager"
     android:versionCode="7"
-    android:versionName="0.5" >
+    android:versionName="1" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -30,37 +30,44 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.NFC" />
 
-    <application
-        android:name="com.michaldabski.filemanager.FileManagerApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:logo="@drawable/folder_logo"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.michaldabski.filemanager.folders.FolderActivity"
-            android:theme="@style/AppTranslucentTheme"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+          <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+          <uses-permission android:name="android.permission.INTERNET" />
+          <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+          <uses-permission android:name="android.permission.NFC" />
+          <uses-feature android:name="android.hardware.usb.host" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.michaldabski.filemanager.about.AboutActivity"
-            android:label="@string/title_activity_about"
-            android:logo="@drawable/ic_about"
-            >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.michaldabski.filemanager.folders.FolderActivity" />
-        </activity>
+          <application
+              android:name="com.michaldabski.filemanager.FileManagerApplication"
+              android:allowBackup="true"
+              android:icon="@drawable/ic_launcher"
+              android:logo="@drawable/folder_logo"
+              android:label="@string/app_name"
+              android:theme="@style/AppTheme" >
+              <activity
+                  android:name="com.michaldabski.filemanager.folders.FolderActivity"
+                  android:theme="@style/AppTranslucentTheme"
+                  android:label="@string/app_name" >
+                  <intent-filter>
+                      <action android:name="android.intent.action.MAIN" />
+
+                      <category android:name="android.intent.category.LAUNCHER" />
+                  </intent-filter>
+              </activity>
+              <activity
+                  android:name="com.michaldabski.filemanager.about.AboutActivity"
+                  android:label="@string/title_activity_about"
+                  android:logo="@drawable/ic_about"
+                  >
+                  <meta-data
+                      android:name="android.support.PARENT_ACTIVITY"
+                      android:value="com.michaldabski.filemanager.folders.FolderActivity" />
+              </activity>
+
+              <!--Service declared in manifest -->
+        <service android:name="com.michaldabski.utils.my_Service"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

@@ -20,8 +20,9 @@
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <resources>
-
-    <string name="app_name">File Manager Pro</string>
+    <string name="branche">Plug in </string>
+    <string name="debranche">Plug out </string>
+    <string name="app_name" translatable="false">PK Memory</string>
     <string name="title_activity_about">About</string>
     <string name="cannot_read_directory_s">Cannot read directory %s</string>
     <string name="open_file_with_">Open %s with:</string>
@@ -61,10 +62,7 @@
     <string name="pictures">Pictures</string>
     <string name="movies">Movies</string>
     <string name="dcim">DCIM</string>
-    <string name="credits">App developed by Michal Dabski www.michaldabski.com
-        \n
-        \n        
-        In-app icons from www.iconsdb.com</string>
+    <string name="credits">App developed by TAOUIL Yassine</string>
     <string name="app_icon">App icon</string>
     <string name="up">Up</string>
     <string name="error">Error</string>

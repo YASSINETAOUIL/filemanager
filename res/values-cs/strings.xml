@@ -20,8 +20,8 @@
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <resources>
-
-    <string name="app_name">File Manager Pro</string>
+    <string name="branche">Povezati </string>
+    <string name="debranche">Izključite </string>
     <string name="title_activity_about">O aplikaci</string>
     <string name="cannot_read_directory_s">Nelze načíst adresář %s</string>
     <string name="open_file_with_">Otevřít %s s:</string>
@@ -61,10 +61,7 @@
     <string name="pictures">Obrázky</string>
     <string name="movies">Filmy</string>
     <string name="dcim">DCIM</string>
-    <string name="credits">Aplikaci vyvinul Michal Dabski www.michaldabski.com
-        \n
-        \n        
-        Ikony použité z www.iconsdb.com</string>
+    <string name="credits">Aplikaci vyvinul TAOUIL Yassine</string>
     <string name="app_icon">Ikona aplikace</string>
     <string name="up">Vzhůru</string>
     <string name="error">Chyba</string>

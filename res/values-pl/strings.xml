@@ -20,8 +20,8 @@
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <resources>
-
-    <string name="app_name">File Manager Pro</string>
+    <string name="branche">Połączyć </string>
+    <string name="debranche">Wchodzić </string>
     <string name="title_activity_about">O aplikacji</string>
     <string name="cannot_read_directory_s">Folder %s jest niedostępny</string>
     <string name="open_file_with_">Otwórz %s w:</string>
@@ -61,10 +61,7 @@
     <string name="pictures">Obrazy</string>
     <string name="movies">Filmy</string>
     <string name="dcim">Zdjęcia</string>
-    <string name="credits">Twórcą aplikacji jest Michał Dąbski www.michaldabski.com
-        \n
-        \n        
-        Ikony w aplikacje pobrane z www.iconsdb.com</string>
+    <string name="credits">Twórcą aplikacji jest TAOUIL Yassine</string>
     <string name="app_icon">Ikona aplikacji</string>
     <string name="up">Do góry</string>
     <string name="error">Błąd</string>

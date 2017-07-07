@@ -75,7 +75,9 @@ public class FileUtils
 	}
 	
 	@SuppressLint("SdCardPath")
-	private static final String SDCARD_DISPLAY_PATH = "/sdcard";
+	// // TODO: 04/07/2017  make it dynamique 
+	public static final String SDCARD_DISPLAY_PATH = "/storage";
+	private static final String USB_DISPLAY_PATH = "/storage/A0C7-6977";
 	private static final double FILE_APP_ICON_SCALE = 0.2;
 	private static final int NUM_FOLDER_PREVIEWS = 6;
 	private static final int THUMBNAIL_SIZE = 256;
@@ -85,8 +87,10 @@ public class FileUtils
 	// user-friendly names for predefined folders
 	public static final String 
 		DISPLAY_NAME_ROOT = "Root",
-		DISPLAY_NAME_SD_CARD = "SD Card";
-	
+		DISPLAY_NAME_SD_CARD = "Stockage carte SD",
+		DISPLAY_NAME_INTERNAL_STORAGE="Stockage interne",
+		DISPLAY_NAME_USB_STORAGE="Stockage USB";
+
 	public final static int 
 		KILOBYTE = 1024,
 		MEGABYTE = KILOBYTE * 1024,
@@ -362,7 +366,13 @@ public class FileUtils
 	{
 		if (file.isDirectory())
 		{
-			if (file.equals(Environment.getExternalStorageDirectory()) || SDCARD_DISPLAY_PATH.equals(file.getAbsolutePath()))
+			File[] files=file.listFiles();
+			if (null != files)
+				for (int j = 0; j < files.length; j++) {
+					if(files[j].getName().contains(".ico")||files[j].getName().contains("autorun.inf"))
+						return R.drawable.ico_k3_256;
+				}
+			if (SDCARD_DISPLAY_PATH.equals(file.getParentFile().getAbsolutePath()))
 				return R.drawable.icon_sdcard;
 			else if (file.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)))
 				return R.drawable.icon_pictures;
@@ -374,6 +384,8 @@ public class FileUtils
 				return R.drawable.icon_music;
 			else if (file.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)))
 				return R.drawable.icon_pictures;
+		//	else if (USB_DISPLAY_PATH.equals(file.getAbsolutePath()))
+		//		return R.drawable.ico_k3_256;
 			else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && file.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)))
 				return R.drawable.icon_documents;
 			return R.drawable.icon_folder;

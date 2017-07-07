@@ -21,6 +21,7 @@
 package com.michaldabski.filemanager.folders;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -29,6 +30,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -83,7 +85,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public class FolderFragment extends Fragment implements OnItemClickListener, OnScrollListener, OnItemLongClickListener, MultiChoiceModeListener, OnFileSelectedListener
+public class FolderFragment extends Fragment  implements OnItemClickListener, OnScrollListener, OnItemLongClickListener, MultiChoiceModeListener, OnFileSelectedListener
 {
 	private static final String LOG_TAG = "FolderFragment";
 	private final int DISTANCE_TO_HIDE_ACTIONBAR = 0; 
@@ -105,7 +107,7 @@ public class FolderFragment extends Fragment implements OnItemClickListener, OnS
 	// set to true when selection shouldnt be cleared from switching out fragments
 	boolean preserveSelection = false;
 	FilePreviewCache thumbCache;
-	
+
 	public AbsListView getListView()
 	{
 		return listView;
@@ -325,7 +327,7 @@ public class FolderFragment extends Fragment implements OnItemClickListener, OnS
 	{
 		super.onPrepareOptionsMenu(menu);
 		menu.findItem(R.id.menu_paste).setVisible(Clipboard.getInstance().isEmpty() == false);
-		menu.findItem(R.id.menu_navigate_up).setVisible(currentDir.getParentFile() != null);
+		menu.findItem(R.id.menu_navigate_up).setVisible(!currentDir.getParent().equals("/"));
 	}
 	
 	void showEditTextDialog(int title, int okButtonText, final OnResultListener<CharSequence> enteredTextResult, CharSequence hint, CharSequence defaultValue)
@@ -371,6 +373,11 @@ public class FolderFragment extends Fragment implements OnItemClickListener, OnS
 				
 			case R.id.menu_navigate_up:
 				String newFolder = currentDir.getParent();
+				// check if i m under root file to prevent go up in root file
+				if(newFolder.equals("/")){
+					newFolder=null;
+				}
+
 				if (newFolder != null)
 				{
 					Bundle args = new Bundle(1);
@@ -391,6 +398,7 @@ public class FolderFragment extends Fragment implements OnItemClickListener, OnS
 					FavouritesManager favouritesManager = getApplication().getFavouritesManager();
 					favouritesManager.addFavourite(new FavouriteFolder(currentDir, directoryName));
 					getActivity().invalidateOptionsMenu();
+
 				} catch (FolderAlreadyFavouriteException e1)
 				{
 					e1.printStackTrace();
@@ -767,6 +775,7 @@ public class FolderFragment extends Fragment implements OnItemClickListener, OnS
 						try
 						{
 							String newName = result.getResult().toString();
+        					//?Toast.makeText(getActivity(), "permiss"+i, Toast.LENGTH_SHORT).show();
 							if (fileToRename.renameTo(new File(fileToRename.getParentFile(), newName)))
 							{
 								finishActionMode(false);

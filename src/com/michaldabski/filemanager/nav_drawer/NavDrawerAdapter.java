@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.michaldabski.filemanager.R;
 import com.michaldabski.filemanager.RobotoAdapter;
@@ -38,7 +39,7 @@ import java.util.List;
 public class NavDrawerAdapter extends RobotoAdapter<NavDrawerItem>
 {
 	private static final int TYPE_COUNT = 2;
-	
+
 	public static interface NavDrawerItem
 	{
 		public static final int 
