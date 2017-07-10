@@ -75,5 +75,6 @@
     <string name="feedback">Odezva na aplikaci</string>
     <string name="file_info">Informace o souboru</string>
     <string name="mime_type_s">MIME typ: %s</string>
+    <string name="supported_devices">\nPodporovaná zařízení::</string>
 
 </resources>

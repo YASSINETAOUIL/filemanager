@@ -75,5 +75,6 @@
     <string name="feedback">Kontakt</string>
     <string name="file_info">O pliku</string>
     <string name="mime_type_s">Typ pliku: %s</string>
+    <string name="supported_devices">\nWspierane urządzenia:</string>
 
 </resources>

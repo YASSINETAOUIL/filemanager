@@ -123,6 +123,9 @@ public class FolderActivity extends Activity implements OnItemClickListener, Cli
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+	/*	if (android.os.Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+			requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+		}
 /*		if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				!= PackageManager.PERMISSION_GRANTED){
 			Toast.makeText(getBaseContext(), "checkSelfPermission", Toast.LENGTH_SHORT).show();

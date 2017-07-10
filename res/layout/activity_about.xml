@@ -29,7 +29,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".AboutActivity" >
+    tools:context=".about.AboutActivity" >
 
     <ImageView
         android:layout_width="wrap_content"
@@ -75,5 +75,21 @@
         android:layout_height="wrap_content"      
         android:drawableLeft="@drawable/ic_other_apps"
         android:text="@string/other_apps" />
+
+    <TextView
+        android:id="@+id/devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:inputType="textPersonName"
+        android:gravity="center"
+        android:text="@string/supported_devices" />
+
+    <TextView
+        android:id="@+id/editText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="@string/list_devices" />
 
 </LinearLayout>

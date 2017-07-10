@@ -76,5 +76,6 @@
     <string name="file_info">Info du fichier</string>
     <string name="mime_type_s">Type MIME : %s</string>
     <string name="up">Haut</string>
+    <string name="supported_devices">\nPériphériques compatibles:</string>
 
 </resources>

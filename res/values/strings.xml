@@ -76,5 +76,7 @@
     <string name="feedback">Feedback</string>
     <string name="file_info">File info</string>
     <string name="mime_type_s">MIME Type: %s</string>
+    <string name="supported_devices">\nSupported devices:\n</string>
+    <string name="list_devices" translatable="false">Samsung S6/S6 edge/S7</string>
 
 </resources>

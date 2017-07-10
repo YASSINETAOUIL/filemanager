@@ -372,7 +372,8 @@ public class FileUtils
 					if(files[j].getName().contains(".ico")||files[j].getName().contains("autorun.inf"))
 						return R.drawable.ico_k3_256;
 				}
-			if (SDCARD_DISPLAY_PATH.equals(file.getParentFile().getAbsolutePath()))
+			if (SDCARD_DISPLAY_PATH.equals(file.getParentFile().getAbsolutePath())&&!file.toString().contains("emulated")
+					&&!file.toString().contains("self"))
 				return R.drawable.icon_sdcard;
 			else if (file.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)))
 				return R.drawable.icon_pictures;
